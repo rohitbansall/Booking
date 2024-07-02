@@ -47,6 +47,21 @@
   cursor: pointer;
 }
 
+.headerBtn a {
+  color: white; /* Set the text color to black */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Ensure the link is treated as an inline block element */
+  width: 100%; /* Make the link fill the button */
+  height: 100%; /* Make the link fill the button */
+  text-align: center; /* Center the text inside the link */
+  line-height: inherit; /* Inherit line height to center text vertically */
+}
+
+.headerBtn a:hover {
+  text-decoration: none; /* Ensure no underline on hover */
+}
+
+
 .headerSearch {
   height: 30px;
   background-color: white;
