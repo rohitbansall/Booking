@@ -1,12 +1,17 @@
 import "./navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
-
 const Navbar = () => {
-  const { user } = useContext(AuthContext);
-  
+  const { user, dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    localStorage.removeItem("user"); 
+    navigate("/login"); 
+  };
 
   return (
     <div className="navbar">
@@ -14,16 +19,24 @@ const Navbar = () => {
         <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
           <span className="logo">AshuBooking</span>
         </Link>
-        {user ? user.username : (
+        {user ? (
           <div className="navItems">
-            
-            <button className="navButton"> <Link to="/login">Login</Link></button>
+            <span className="navUsername">{user.username}</span>
+            <button className="navButton" onClick={handleLogout}>Logout</button>
+          </div>
+        ) : (
+          <div className="navItems">
+            <button className="navButton">
+              <Link to="/login">Login</Link>
+            </button>
+            <button className="navButton">
+              <Link to="/register">Register</Link>
+            </button>
           </div>
         )}
       </div>
     </div>
   );
 };
-<button className="navButton"><Link to="/register">Register</Link></button>
 
 export default Navbar;

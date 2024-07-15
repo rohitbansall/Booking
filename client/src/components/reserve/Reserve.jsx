@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-
 import "./reserve.css";
 import useFetch from "../../hooks/useFetch";
 import { useContext, useState } from "react";
@@ -16,10 +15,8 @@ const Reserve = ({ setOpen, hotelId }) => {
   const getDatesInRange = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
-
-    const date = new Date(start.getTime());
-
     const dates = [];
+    const date = new Date(start.getTime());
 
     while (date <= end) {
       dates.push(new Date(date).getTime());
@@ -32,11 +29,9 @@ const Reserve = ({ setOpen, hotelId }) => {
   const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
 
   const isAvailable = (roomNumber) => {
-    const isFound = roomNumber.unavailableDates.some((date) =>
+    return !roomNumber.unavailableDates.some((date) =>
       alldates.includes(new Date(date).getTime())
     );
-
-    return !isFound;
   };
 
   const handleSelect = (e) => {
@@ -54,17 +49,20 @@ const Reserve = ({ setOpen, hotelId }) => {
   const handleClick = async () => {
     try {
       await Promise.all(
-        selectedRooms.map((roomId) => {
-          const res = axios.put(`/rooms/availability/${roomId}`, {
-            dates: alldates,
-          });
-          return res.data;
-        })
+        selectedRooms.map((roomId) =>
+          axios.put(`/rooms/availability/${roomId}`, { dates: alldates })
+        )
       );
       setOpen(false);
-      navigate("/");
-    } catch (err) {}
+      // navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error loading rooms</div>;
+
   return (
     <div className="reserve">
       <div className="rContainer">
@@ -86,7 +84,7 @@ const Reserve = ({ setOpen, hotelId }) => {
             </div>
             <div className="rSelectRooms">
               {item.roomNumbers.map((roomNumber) => (
-                <div className="room">
+                <div className="room" key={roomNumber._id}>
                   <label>{roomNumber.number}</label>
                   <input
                     type="checkbox"

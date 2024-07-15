@@ -54,6 +54,9 @@ const Header = ({ type }) => {
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
     navigate("/hotels", { state: { destination, dates, options } });
   };
+  const handle = ()=>{
+      navigate("/");
+  }
 
   return (
     <div className="header">
@@ -65,7 +68,8 @@ const Header = ({ type }) => {
         <div className="headerList">
           <div className="headerListItem active">
             <FontAwesomeIcon icon={faBed} />
-            <span>Stays</span>
+               <span onClick={handle}>Stays</span>
+            
           </div>
           <div className="headerListItem">
             <FontAwesomeIcon icon={faPlane} />

@@ -25,6 +25,8 @@ const Register = () => {
       const res = await axios.post("http://localhost:8800/api/auth/register", credentials); // Update the URL to your backend
       dispatch({ type: "REGISTER_SUCCESS", payload: res.data });
       navigate("/login");
+      setCredentials({username: "", email: "" ,  password: ""})
+
     } catch (err) {
       dispatch({ type: "REGISTER_FAILURE", payload: err.response.data });
     }
